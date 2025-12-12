@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraveBites | Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #ff4757; /* Appetite Red */
+            --secondary: #2f3542; /* Dark Text */
+            --light: #f1f2f6; /* Background Grey */
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { width: 100%; height: auto; }
+
+        /* --- NAVIGATION --- */
+        header {
+            background: var(--white);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-btn {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            margin-top: 60px; /* Offset for fixed header */
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--white);
+        }
+
+        /* --- CATEGORIES --- */
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            font-size: 2rem;
+            color: var(--secondary);
+        }
+
+        .categories-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 5%;
+            flex-wrap: wrap;
+        }
+
+        .category-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            width: 150px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category-card:hover { transform: translateY(-5px); }
+
+        .category-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- FEATURED MENU (GRID) --- */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 5% 3rem;
+        }
+
+        .food-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        .food-card:hover { transform: scale(1.02); }
+
+        .food-img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .food-info {
+            padding: 1.5rem;
+        }
+
+        .food-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .food-desc {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 1rem;
+        }
+
+        .add-btn {
+            width: 100%;
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover { background: var(--primary); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 3rem 5%;
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        footer h3 { margin-bottom: 1rem; color: var(--primary); }
+        footer ul li { margin-bottom: 0.5rem; cursor: pointer; }
+        footer ul li:hover { color: var(--primary); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hidden by default on mobile */
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                background: var(--white);
+                width: 100%;
+                text-align: center;
+                padding: 1rem 0;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active { display: flex; } /* JS toggles this */
+            
+            .mobile-toggle { display: block; }
+
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">CraveBites <i class="fas fa-utensils"></i></div>
+        <nav>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-icons">
+            <div class="cart-btn" onclick="alert('Opening Cart...')">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <h1>Delicious Food,<br>Delivered To You</h1>
+        <p>Choose from top rated restaurants and get fast delivery to your doorstep.</p>
+        <a href="#menu" class="btn">Order Now</a>
+    </section>
+
+    <h2 class="section-title">What are you craving?</h2>
+    <section class="categories-container">
+        <div class="category-card">
+            <i class="fas fa-pizza-slice"></i>
+            <h3>Pizza</h3>
+        </div>
+        <div class="category-card">
+            <i class="fas fa-hamburger"></i>
+            <h3>Burger</h3>
+        </div>
+        <div class="category-card">
+            <i class="fas fa-fish"></i>
+            <h3>Sushi</h3>
+        </div>
+        <div class="category-card">
+            <i class="fas fa-coffee"></i>
+            <h3>Drinks</h3>
+        </div>
+    </section>
+
+    <h2 class="section-title" id="menu">Popular Dishes</h2>
+    <section class="menu-container">
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Burger" class="food-img">
+            <div class="food-info">
+                <div class="food-header">
+                    <h3>Classic Burger</h3>
+                    <span class="price">$8.99</span>
+                </div>
+                <p class="food-desc">Juicy beef patty with cheddar, lettuce, and our secret sauce.</p>
+                <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Pizza" class="food-img">
+            <div class="food-info">
+                <div class="food-header">
+                    <h3>Pepperoni Pizza</h3>
+                    <span class="price">$12.50</span>
+                </div>
+                <p class="food-desc">Crispy crust topped with mozzarella and spicy pepperoni.</p>
+                <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Sushi" class="food-img">
+            <div class="food-info">
+                <div class="food-header">
+                    <h3>Sushi Platter</h3>
+                    <span class="price">$18.00</span>
+                </div>
+                <p class="food-desc">Fresh salmon and tuna rolls served with soy sauce.</p>
+                <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Pizza" class="food-img">
+            <div class="food-info">
+                <div class="food-header">
+                    <h3>Veggie Pizza</h3>
+                    <span class="price">$10.99</span>
+                </div>
+                <p class="food-desc">Loaded with bell peppers, onions, mushrooms, and olives.</p>
+                <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-col">
+            <h3>CraveBites</h3>
+            <p>Best food delivery service in town. Fresh, fast, and delicious.</p>
+        </div>
+        <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul>
+                <li>Home</li>
+                <li>Menu</li>
+                <li>Offers</li>
+                <li>Contact</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="fas fa-map-marker-alt"></i> 123 Food Street</li>
+                <li><i class="fas fa-phone"></i> +855 69 373 868</li>
+                <li><i class="fas fa-envelope"></i> somongkul567@gmail.com</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+                <i class="fab fa-facebook fa-lg"></i>
+                <i class="fab fa-instagram fa-lg" style="margin-left: 10px;"></i>
+                <i class="fab fa-twitter fa-lg" style="margin-left: 10px;"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Add to Cart Logic
+        let count = 0;
+        const cartCountElement = document.getElementById('cartCount');
+
+        function addToCart() {
+            count++;
+            cartCountElement.innerText = count;
+            
+            // Simple visual feedback animation
+            cartCountElement.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                cartCountElement.style.transform = "scale(1)";
+            }, 200);
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
